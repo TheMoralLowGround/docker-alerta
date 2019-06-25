@@ -5,13 +5,12 @@ LABEL maintainer="Nick Satterly <nick.satterly@gmail.com>"
 
 ARG BUILD_DATE
 ARG VCS_REF
-ARG VERSION
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.url="http://alerta.io" \
       org.label-schema.vcs-url="https://github.com/alerta/docker-alerta" \
       org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.version=$VERSION \
+      org.label-schema.version=6.0 \
       org.label-schema.schema-version="1.0.0-rc.1"
 
 RUN apt-get update && apt-get install -y \
@@ -29,12 +28,12 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install --no-cache-dir virtualenv && \
     virtualenv --python=python3 /venv && \
-    /venv/bin/pip install uwsgi alerta alerta-server==$VERSION
+    /venv/bin/pip install uwsgi alerta alerta-server==6.0
 ENV PATH $PATH:/venv/bin
 
-ADD https://github.com/alerta/angular-alerta-webui/archive/v$VERSION.tar.gz /tmp/web.tar.gz
+ADD https://github.com/alerta/angular-alerta-webui/archive/v6.0.tar.gz /tmp/web.tar.gz
 RUN tar zxvf /tmp/web.tar.gz -C /tmp && \
-    mv /tmp/angular-alerta-webui-$VERSION/app /web && \
+    mv /tmp/angular-alerta-webui-6.0/app /web && \
     mv /web/config.json /web/config.json.orig
 
 COPY wsgi.py /app/wsgi.py
